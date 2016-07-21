@@ -1,0 +1,43 @@
+require('./commodity-sku.html');
+
+<commodity-distribution>
+  <div class="cont_text11" style="overflow:auto;margin-top:-5px;">
+    <div style="color:#595757;margin-bottom: 10px;font-size: 17px;">
+      {opts.commodity.name}
+    </div>
+    <div>  
+      <span class="boxred" style="margin-right:5px; float:left;background-color: #f0373d;padding: 0 10px;">
+        <span class="fontsize4" style="float:left;font-size: 16px;">
+          {opts.commodity.partakers}人成团
+        </span>
+        <span class="group_num1" style="float:left"></span>
+        <span style="float:left; font-size:15px;">
+          {$.util.filter.currency(opts.commodity.discount)}
+        </span>
+      </span>
+      <span class="del_l" style="height:27px; line-height:27px; color:#898989;">
+        <span class="fontsize2" style="color:#898989; font-weight:normal; white-space:nowrap">
+         原价{$.util.filter.currency(opts.commodity.price)}
+        </span>
+      </span>
+    </div>
+    <div style="clear:both"></div>
+  </div>
+  
+  <commodity-sku commodity="{opts.commodity}"></commodity-sku>
+
+  <div class="box_text1">
+    <div if="{opts.commodity.model === 'distribution'}">
+      <div class="fontsize222"><span style="color: #b5b5b6;">团长外快 &nbsp;</span><span class="fontsize3" style=" color:#231815">{$.util.filter.currency(opts.commodity.earnest)}+</span></div>
+    </div>
+    <div>
+      <div class="fontsize222"><span style="color: #b5b5b6;">成团时间&nbsp;&nbsp;</span><span style=" color:#231815">{opts.commodity.times_str}</span></div>
+    </div>
+    <div if="{opts.commodity.coll===1}">
+      <div class="text-primary">
+        团长代收团员快递
+      </div>
+    </div>
+  </div>
+</commodity-distribution>
+

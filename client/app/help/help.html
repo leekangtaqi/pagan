@@ -1,0 +1,22 @@
+require('./help-more.html');
+require('./help-merchant.html');
+
+<help show="{show}">
+	<div>
+		<help-more></help-more>
+		<help-merchant></help-merchant>
+	</div>
+	<script>
+		this.mixin('router');
+		this.$routeConfig([
+			{
+				path: '/more',
+				name: 'help-more'
+			},
+			{
+				path: '/merchant',
+				name: 'help-merchant'
+			}
+		])
+	</script>	
+</help>

@@ -1,0 +1,70 @@
+require('./group-sku.html');
+
+<group-ladder>
+  <div class="cont_text11" style="overflow:auto;margin-top:-10px;">
+    <div style="color:#595757;font-size: 17px;">{opts.group.commodity.name}</div>
+    <div class="row">
+      <span class="yuanjia">
+        <span class="fontsize2">
+          原价{$.util.filter.currency(opts.group.commodity.price)}
+        </span>
+      </span>
+    </div>
+    <div>
+    <img class="mymg" riot-src="http://91pt.oss-cn-beijing.aliyuncs.com/home/ymyimg/365147173710008178.png"/>
+      <div style="float: left;">
+        <div each="{ldprc in opts.group.commodity.ladder.prices}">
+          <div style="border-color:red;padding:3px;" class="{'bg-primary1': ldprc.people === parent.opts.money.people}">
+            <span>{ldprc.people}人以上</span>
+            <span class="{'text-primary1': ldprc.people !== parent.opts.money.people}">{$.util.filter.currency(ldprc.price)}</span>
+          </div>
+        </div>
+      </div>
+      <div class="col-xs-4 no-float display-table-cell" style="vertical-align: top;">
+        <table class="table" style="margin-bottom:0;">
+          <tbody>
+            <tr each="{ldprc in group.commodity.ladder.prices}">
+              <td style="border:none;padding:3px;" >
+                &nbsp;<span style="color: #f0373d;" if="{ldprc.people === parent.opts.money.people}">(当前价)</span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <group-sku group="{opts.group}"></group-sku>
+
+  <div class="box_text1">
+    <div class="row">
+      <div class="col-xs-7">
+        <div class="text-left fontsize2 font_margin1">
+          <span>团长:{opts.group.address.name}</span>
+          <span class="text-primary" if="{opts.group.commodity.coll}">(代收快递)</span>
+        </div>
+      </div>
+      <div class="col-xs-5 text-right">
+        <a class="linkLine color_red" href="/partaker/list/_{opts.group.id}"><span class="fontsize1">{opts.group.num_order}</span></a>
+        <span class="fontsize1">人参团</span><span class="fontsize1"></span>
+      </div>
+    </div>
+    <uib-progressbar class="progressbar" value="{(opts.group.num_order/money.max)*100}" style="height:8px;border: none;background-color: #dcdddd;margin: 4px 0;"></uib-progressbar>
+
+    <div class="row">
+      <div class="col-xs-6"></div>
+      <div class="col-xs-6">
+        <div class="text-right text_light fontsize1">
+          <div>
+            <span if="{opts.isbefore}">剩余时间</span>
+            <span am-time-ago="group.time_end" if="{opts.isbefore}">0</span>
+            <span if="{!opts.isbefore}">已结束</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</group-ladder>
+
+
+

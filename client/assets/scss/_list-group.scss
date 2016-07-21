@@ -1,0 +1,12 @@
+.list-group-item{
+  margin-top:5px;
+}
+.list-group-item:first-child {
+	border-top-right-radius: 0px;
+	border-top-left-radius: 0px;
+}
+.list-group-item:last-child {
+	border-bottom-right-radius: 0px;
+	border-bottom-left-radius: 0px;
+}
+

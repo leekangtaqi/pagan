@@ -1,0 +1,105 @@
+<group-list show="{show}">
+	<div class="fenlei" if="{opts.filterGrp!=='my'}">
+		{opts.route}
+		<span class="gleft {active: opts.route === '/group/list'}">
+			<a class="gaa" href="/group/list?id={commId}">大家的团</a>
+		</span>
+		<span class="gang">|</span>
+		<span class="gright {active: opts.route === '/group/miss'}">
+			<a class="gaa" href="/group/miss?id={commId}">看看哪些团还缺人</a>
+		</span>
+	</div>
+
+	<div if="{opts.filterGrp==='all'}" class="djdt">
+		<p class="grouplist1">该商品共发起拼团数为</p>
+		<p class="grouplist2"><span class="grouplist3">{opts.groups.count}</span>个团</p>
+	</div>
+
+	<div class="grouplist4">
+		<on-scroll
+			if="{opts.groups && opts.groups.items.length}"
+			infinite-scroll='{opts.nextPage}'
+			infinite-scroll-disabled='{opts.groups.busy}'
+			infinite-scroll-distance='{100}'
+			infinite-scroll-listen-for-event='{groups.filter}'
+		>
+			<div style="margin-bottom: 10px;" each="{group in parent.opts.groups.items}">
+				<a href="/group/_{group.id}" target-for-android style="color:#595757;">
+					<div class="grouplist5">
+						<div style="margin-top: 10px;">
+							<p style="margin-left: 10px;font-size: 13px;" if="{!group.isBefore}">已结束</p>
+							<p class="grouplist6" if="{group.isBefore}"><span>剩余时间:</span><span am-time-ago="group.time_end">0</span></p>
+							<p class="grouplist7" if="{group.commodity.model === 'ladder' && group.isBefore}">{group.num_order}人已参团(阶梯团)</p>
+							<p class="grouplist7" if="{group.commodity.model !== 'ladder'&&group.isBefore}">
+								{group.commodity.partakers>group.num_order?'还差'+(group.commodity.partakers-group.num_order)+'人成团':'已成团'}
+							</p>
+						</div>
+
+						<div class="media media-order">
+							<div class="media-left">
+								<img-lazy-loader class="grouplist8" height="{300}" width="{430}" holder="svg:holder.js/100px186?theme=gray&text=91pintuan.com[91拼团]" src="{'http:\/\/img1.ifindu.cn\/crop\/w_430\/h_300'+group.commodity.cover}" style="margin:auto" class="img-responsive" alt="{group.commodity.name}"></img-lazy-loader>
+							</div>
+
+							<div class="media-body1">
+								<p class="media-heading1">
+									{group.commodity.name}
+								</p>
+								<div class="grouplist9">团长：{group.address.name}</div>
+								<div if="{groups.params.my === 'post'}" class="word-break">
+									开团时间:{$.util.filter.date(new Date(group.time.add), 'yyyy-MM-dd')}
+								</div>
+								<div if="{groups.params.my !== 'post'}" class="word-break">
+									开团时间:{$.util.filter.date(new Date(group.time.add), 'yyyy-MM-dd')}
+								</div>
+							</div>
+						</div>
+					</div>
+				</a>
+			</div>
+		</on-scroll>
+	</div>
+
+	<script>
+		import {connect} from 'riot-redux';
+		import actions from './group.actions';
+		import Cookies from '../../framework/cookie';
+		this.mixin('router');
+		connect(
+			state => ({
+				groups: state.groups,
+				filterGrp: state.groupsFilter,
+				route: state.route.$state
+			}),
+			dispatch => ({
+				nextPage: () => dispatch(actions.nextPage()),
+				changeTitle: title => dispatch({type: 'changeTitle', payload: title}),
+				setFilter: filter => dispatch({type: 'setGroupsFilter', payload: filter}),
+				initGroups: json => dispatch(actions.initGroups(json))
+			})
+		)(this);
+
+		this.$use(function(next, ctx){
+			this.opts.changeTitle('拼团列表');
+			this.opts.setFilter('all');
+			var params = {};
+			if(ctx.request.query.id){
+				this.commId = ctx.request.query.id;
+				Cookies.set('commId', ctx.request.query.id);
+				params = {commodity: ctx.request.query.id}
+			}
+			if(ctx.request.query.my){
+				params = {my: ctx.request.query.my}
+				this.opts.setFilter('my');
+			}
+			if(ctx.request.query.filter) {
+				params.filter = ctx.request.query.filter;
+			};
+			if(context.store.getState().route.$state === '/group/miss'){
+				params.filter = 'missing';
+				this.opts.setFilter('missing');
+			}
+			this.opts.initGroups({params: params});
+			next();
+		})
+	</script>
+</group-list>

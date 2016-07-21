@@ -1,0 +1,35 @@
+<order-refund show="{show}">
+	<div class="tkdiv">
+		<p class="tkbig">成团后不想要了，我要退款</p>
+		<p class="tksmall">申请退款后商家会联系你，商家通过后为你解决</p>
+		<!--<button class="tkan" ng-click="drawBack()">测试</button>-->
+		<button class="tkan" onclick="{drawBack}"
+			disabled="{opts.partaker.status.refund || opts.partaker.status.ask_refund}">
+			{opts.partaker.status.refund ? '已退款' : (opts.partaker.status.ask_refund ? '退款申请中....' : '申请退款')}
+		</button>
+	</div>
+	<div class="tkdiv">
+		<p class="tkbig">有更多问题？联系商家</p>
+		<p class="tksmall">请咨询商家，电话 <a href="tel:+{ opts.merchant.info.phone ? opts.merchant.info.phone : opts.merchant.info.telephone }">{ opts.merchant.info.phone ? opts.merchant.info.phone : opts.merchant.info.telephone }</a></p>
+	</div>
+
+	<script>
+		import {connect} from 'riot-redux';
+		import ptkActions from '../partaker/partaker.actions';
+		connect(
+			state => ({
+				partaker: state.partaker,
+				merchant: state.merchant
+			}),
+			dispatch => ({
+				drawBack: id => dispatch(ptkActions.drawBack(id))
+			})
+		)(this)
+		this.drawBack = e => {
+			if(!this.opts.partaker.id){
+				return;
+			}
+			this.opts.drawBack(this.opts.partaker.id)
+		};
+	</script>
+</order-refund>

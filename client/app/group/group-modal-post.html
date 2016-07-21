@@ -1,0 +1,31 @@
+<group-modal-post>
+	<div class="out-box">
+		<div class="text-center">
+			<div if="{!opts.isBefore}">该团已到期，您可新开团</div>
+			<div if="{opts.isBefore}">该团人数已满，您可新开团</div>
+			<!-- if="{model === 'share' || model === 'ladder'}"-->
+			<button  class="btn btn-block buttom-11" onclick="{ok}">开团</button>
+		</div>
+		<!--
+		<div class="text-center" if="{opts.model === 'distribution'}">
+			<div if="{!opts.isBefore}">该团已到期</div>
+			<div if="{opts.isBefore}">该团人数已满</div>
+		</div>
+		-->
+	</div>
+
+	<script>
+		this.ok = () => {
+			this.trigger('dismiss', '开团');
+			riot.route('/commodity/_' + this.opts.commId + '/group');
+			//$location.path('group/commodity/'+commId+'/post');
+		};
+		this.goon = function () {
+			this.trigger('dismiss', '继续参加');
+			riot.route('/group/_' + this.opts.grpId + '/join');
+		};
+		this.cancel = function () {
+			this.trigger('dismiss', 'cancel');
+		};
+	</script>
+</group-modal-post>

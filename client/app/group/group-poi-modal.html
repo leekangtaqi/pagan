@@ -1,0 +1,46 @@
+<group-poi-modal>
+	<div style="width:{screen.width}px; height:{screen.height}px;overflow:scroll;" if="{opts.pois.length}">
+    <div class="list-group address_list">
+      <a href="#" class="list-group-item poiList"
+          each="{poi in opts.pois}"
+          onclick="{parent.selPoi(poi)}">
+          <!--右侧按钮圈-->
+          <span class="point"></span>
+          <span class="point1" if="{opts.address.poi.id === poi.id}"></span>
+          <div class="resLeft">
+            <span class="badge distance" if="{poi.distance}">{poi.distance}KM</span>
+            <h4 class="list-group-item-heading">
+                {poi.base_info.business_name+(poi.base_info.branch_name?'('+poi.base_info.branch_name+')':'')}	
+            </h4>
+            <p class="list-group-item-text">
+                <span>{poi.base_info.province}</span>
+                <span>{poi.base_info.city}</span>
+                <span>{poi.base_info.district}</span>
+                <span>{poi.base_info.address}</span>
+            </p>
+          </div>
+      </a>
+    </div>
+	</div>
+
+	<div if="{!opts.pois.length}" class="beyWamp" >
+			<div class="beyond">
+			<span>:( 您当前位置距离该商家门店过远</span><br />
+			<button class="bey_back"  ng-click="$dismiss()">返回</button>
+			</div>
+	</div>
+
+	<script>
+		this.on('mount', ()=>{
+            this.screen = {
+                width: window.innerWidth
+                    || document.documentElement.clientWidth
+                    || document.body.clientWidth,
+                height: window.innerHeight
+                    || document.documentElement.clientHeight
+                    || document.body.clientHeight
+            }
+		})
+        this.selPoi = poi => e => this.trigger('dismiss', poi);
+	</script>
+</group-poi-modal>

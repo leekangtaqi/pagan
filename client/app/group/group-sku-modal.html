@@ -1,0 +1,52 @@
+<group-sku-modal>
+	<div class="modal-body" style="width: 100%;">
+		<div class="skudiv">
+			<img class="skuimg" riot-src="http://img1.ifindu.cn/crop/w_64/h_45/{opts.group.commodity.info.cover}" />
+			<p class="skupm">{opts.group.commodity.info.name}</p>
+		</div>
+		<div each="{sku, index in opts.group.commodity.sku}">
+			<h4 class="skupf">{sku.norms.name}</h4>
+			<!--当某种库存没有的时候将lable中的class换成skufc-->
+			<radio-group class="{xx: true}" onchange="{parent.onItemsChange}">
+				<radio
+					class="{skumr: parent.parent.stocks[item.id] > 0, skufc: parent.parent.stocks[item.id] < 1 }" 
+					value="{ item.id }" 
+					each="{ item in sku.items }">{ item.name }</radio>
+			</radio-group>
+		</div>
+		<div class="skubtndiv">
+			<button class="btn btnsku" onclick="{goPay}">下一步</button>
+		</div>
+	</div>
+	<script>
+		import Cookies from '../../framework/cookie';
+		this.on('mount', ()=>{
+			this.commodity = this.opts.group.commodity;
+			let group = this.opts.group;
+			this.items = [];
+			$.get(`/commodity/${group.commodity.id}/sku/stock`).then(stocks=>this.update({stocks: stocks}));
+		});
+
+		this.onItemsChange = e => this.items[e.item.index] = e.target.value;
+
+		this.goPay = () => {
+			if(this.items.length < 1){
+				widgets.Alert.add('warn', '请选择规格');
+				return false;
+			}
+			for(var i=0; i < this.opts.group.commodity.sku.length; i++){
+				if(!this.items[i]) {
+					widgets.Alert.add('warn', '请选择规格');
+					return false;
+				}
+			}
+			var key = 'grp_sku_' + this.opts.group.id;
+			$.post(`/commodity/${this.opts.group.commodity.id}/sku/stock`, {skus: this.items}).then(stocks=>{
+					// 使用的stock
+					Cookies.set(key, stocks.id);
+					riot.route(`wepay?id=${this.opts.group.id}&showwxpaytitle=1&tag=group-info-join`);
+					// location.href = $state.href('wepay', {id: group.id, showwxpaytitle: 1, module:'group', action: 'join'});
+			});
+		}
+	</script>
+</group-sku-modal>

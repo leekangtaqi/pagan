@@ -1,0 +1,43 @@
+require('./commodity-sku.html');
+
+<commodity-ladder>
+  <div class="cont_text11" style="overflow:auto;margin-top:-10px;">
+    <div style="font-size: 17px;color: #595757;">
+      {opts.commodity.name}
+    </div>
+    <span class="yuanjia">
+      <span class="fontsize2">原价{$.util.filter.currency(opts.commodity.price)}</span>
+    </span>
+    <div>
+      <img class="ptimg" riot-src="http://91pt.oss-cn-beijing.aliyuncs.com/home/ymyimg/365147173710008178.png" />
+      <div class="jttptj" each="{ldprc in opts.commodity.ladder.prices}">
+        <span>{ldprc.people}人以上</span>
+        <span>{$.util.filter.currency(ldprc.price)}</span>
+      </div>
+    </div>	
+  </div>
+
+  <div style="clear:both"></div>
+
+  <commodity-sku></commodity-sku>
+
+  <div style="clear:both"></div>
+
+  <div class="box_text1">
+    <div if="{opts.commodity.ladder.commission}">
+      <div class="font222"><span style="color: #b5b5b6;">团长外快 &nbsp;&nbsp;</span><span class="fontsize3" style=" color:#231815">{$.util.filter.currency(opts.commodity.ladder.commission)}+</span></div>
+    </div>
+    <div>
+      <div class="font222">
+        <span style="color: #b5b5b6;">成团时间 &nbsp;&nbsp;</span><span style=" color:#231815">{opts.commodity.times_str}</span>
+        <p class="font222" style="margin: 0;">参团定金&nbsp;&nbsp;<span style=" color:#231815">{opts.commodity.model==='ladder' ? $.util.filter.currency(opts.commodity.ladder.prepay) : $.util.filter.currency(opts.commodity.prepay)}</span></p>
+      </div>
+    </div>
+    <div if="{opts.commodity.coll===1}">
+      <div class="text-primary">
+        团长代收团员快递
+      </div>
+    </div>
+  </div>
+</commodity-ladder>
+	

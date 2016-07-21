@@ -1,0 +1,8 @@
+<commodity-sku>
+  <div class="ksku" if="{opts.commodity.sku.length}">
+    <div each="{sku in opts.commodity.sku}">
+        <span class="font222">{sku.norms.name}</span>&nbsp;&nbsp;
+        <span class="font2222" each="{item, index in sku.items}">{item.name} {index === parent.sku.items.length - 1 ? '' : ' 、 '}</span>
+    </div>
+  </div>
+</commodity-sku>

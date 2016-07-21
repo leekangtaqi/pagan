@@ -1,0 +1,41 @@
+<user-redpacket show="{show}">
+	<div style="background-color: #f4f5f9;height: 600px;">
+		<on-scroll
+			if="{opts.bills && opts.bills.items.length}"
+			infinite-scroll='{nextPage}'
+			infinite-scroll-disabled='{opts.bills.busy}'
+			infinite-scroll-distance='{100}'>
+			<div class="hei" each="{bill in parent.opts.bills.items}">
+				<p class="wkp">{bill.item}</p>
+				<span style="font-size: 13px;color: #898989;">{$.util.filter.date(new Date(bill.time.add), 'yyyy-MM-dd')}</span>
+				<span style="float: right;font-size: 20px;color: #231815;">{$.util.filter.currency(bill.total)}</span>
+			</div>
+
+			<div style="background-color: #f4f5f9;height: 600px;">
+				<div class="nowk" if="{!bills.count}">
+					<p class="np1">您暂时还没有团长外快</p>
+					<p class="np2">￥0.00</p>
+				</div>
+			</div>
+		</on-scroll>	
+	</div>
+	
+	<script>
+		import {connect} from 'riot-redux';
+		import billActions from '../bill/bill.actions';
+		this.mixin('router');
+		connect(
+			state => ({
+				bills: state.bills
+			}),
+			dispatch => ({
+				nextPage: () => dispatch(billActions.nextPage())
+			})
+		)(this)
+		this.$use(function(next){
+			context.store.dispatch({type: 'initBills', payload: {}});
+			next();
+		})
+		this.nextPage = e => this.opts.nextPage();
+	</script>
+</user-redpacket>

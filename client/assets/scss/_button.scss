@@ -1,0 +1,53 @@
+@mixin btn-line-states($color, $background, $border) {
+  color: $background;
+  background-color: #fff;
+  border-color: $border;
+
+  &:hover,
+  &:focus,
+  &:active,
+  &.active {
+    background-color: darken($background, 5%);
+    color:$color;
+    border-color: darken($border, 10%);
+  }
+
+  &.disabled,
+  &[disabled],
+  fieldset[disabled] & {
+    &,
+    &:hover,
+    &:focus,
+    &:active,
+    &.active {
+      background-color: $color;
+      border-color: $border
+    }
+  }
+}
+
+.btn-line {
+  &.btn-default {
+    @include btn-line-states($btn-default-bg, $btn-default-color, $btn-default-border);
+  }
+  &.btn-primary {
+    @include btn-line-states($btn-primary-color, $btn-primary-bg, $btn-primary-border);
+  }
+  &.btn-warning {
+    @include btn-line-states($btn-warning-color, $btn-warning-bg, $btn-warning-border);
+  }
+  // Danger and error appear as red
+  &.btn-danger {
+    @include btn-line-states($btn-danger-color, $btn-danger-bg, $btn-danger-border);
+  }
+  // Success appears as green
+  &.btn-success {
+    @include btn-line-states($btn-success-color, $btn-success-bg, $btn-success-border);
+  }
+  // Info appears as blue-green
+  &.btn-info {
+    @include btn-line-states($btn-info-color, $btn-info-bg, $btn-info-border);
+  }
+}
+
+.btn-lg{border-radius:30px;}

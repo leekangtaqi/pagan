@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+.center-block {
+  max-width:274px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+.text-center {
+  text-align: center;
+}
+.text-right{
+  text-align:right;
+}
+.img-thumbnail {
+  margin: 5px;
+  display: inline-block;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  padding: 4px;
+  line-height: 1.42857143;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  -webkit-transition: all .2s ease-in-out;
+  -o-transition: all .2s ease-in-out;
+  transition: all .2s ease-in-out;
+}
+.bg-primary {
+  text-align: center;
+  padding: 7px;
+  color: #fff;
+  background-color: #428bca;
+}
+kbd {
+  padding: 2px 4px;
+  font-size: 90%;
+  color: #fff;
+  background-color: #333;
+  border-radius: 3px;
+  -webkit-box-shadow: inset 0 -1px 0 rgba(0,0,0,.25);
+  box-shadow: inset 0 -1px 0 rgba(0,0,0,.25);
+}
+
+
+//code
+.code-margin{
+  background-color:#f7f8f8;
+  padding-top:60px;
+  width:100%;
+
+}
+.code-you{
+  font-size:22px;
+}
+.code-logo-wai{
+  padding:10px;
+  background-color:#FFFFFF;
+  background:#fff;color:#333;filter:progid:DXImageTransform.Microsoft.Shadow(color=#909090,direction=120,strength=4);/*ie*/
+  -moz-box-shadow: 4px 5px 15px #e6e5df;/*firefox*/
+  -webkit-box-shadow: 4px 5px 15px #e6e5df;/*safari或chrome*/
+  box-shadow:4px 5px 15px #e6e5df;/*opera或ie9*/
+
+}
+
+.code-logo-font{
+  font-size:18px;
+}
+
+.code-logo{
+  padding:20px 0; 
+}
+
+.code-me{
+  width:70%;
+  margin:auto;
+}
+
+.code-me dl{
+  padding-top:40px;
+}
+
+.code-me dl dd{
+  font-size:22px;
+}
+</style>
+</head>
+<body>
+  <div class="center-block">
+<% if (src) { %>
+    <h3>亲爱的<%- order.receiver.name%>:</h3>
+    <div class="text-center code-logo-wai">
+       <div class="text-center code-logo-font">微信扫一扫,听Ta对你说</div>
+       <div class="code-logo">
+          <img src="<%- src %>" style="width:100%">
+      </div>
+    </div>
+    <p class="text-right"><%- order.sender.name%> <%= (new Date(order.time.add)).getFullYear()+'/'+(new Date(order.time.add)).getMonth()+'/'+(new Date(order.time.add)).getDate()%></p>
+    <p class="bg-primary">长按二维码，点击 <kbd>保存图片</kbd> 按钮</p>
+<% }else{%>
+  暂无二维码
+<% } %>
+  </div>
+</body>
+</html>

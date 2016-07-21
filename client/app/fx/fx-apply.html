@@ -1,0 +1,74 @@
+<fx-apply show="{show}">
+	<style type="text/css">
+		body{background-color: #f4f5f9;}
+	</style>
+	<div class="yhtx">
+		<div class="bgimg">
+			<img src="{user.photo}" />
+		</div>
+	</div>
+	<form name="fxForm" novalidate autocomplete="off">
+		<div class="form-group inpdiv">姓&nbsp;&nbsp;&nbsp;名
+			<input type="text" class="myinpt" 
+				placeholder="{forms['fxForm']['fxer.name'].$invalid && submitted?'姓名必须输入':'输入你的真实姓名'}"
+				name="fxer.name"
+				required>
+		</div>
+		<div class="form-group inpdiv"
+			class="{
+				'has-success': forms['fxForm']['fxer.telephone'].$valid && submitted,
+				'has-error': forms['fxForm']['fxer.telephone'].$invalid && submitted,
+			}"
+		>手机号
+			<input type="tel" class="myinpt" 
+				placeholder="{forms['fxForm']['fxer.telephone'].$invalid && submitted ? '手机号必须填写' : '输入你的手机号方便商家联系'}"
+				name="fxer.telephone"
+				required
+				pattern="^1[3|4|5|7|8]\d\{9\}$"
+			>
+			<p show="{forms['fxForm']['fxer.telephone'].$error.pattern && submitted}" class="help-block">请填正确格式的手机号.</p>
+		</div>
+		<button onclick="{apply}" class="btn fxbtn" disabled="{disabled}">提交申请</button>
+	</form>
+	<div style="margin-top: 115px;">
+		<bottom></bottom>
+	</div>
+
+	<script>
+		import {connect} from 'riot-redux';
+		this.mixin('router');
+		this.mixin('form');
+		this.useForm();
+		connect(
+			null,
+			dispatch => ({
+				changeTitle: title => dispatch({type: 'changeTitle', payload: title})
+			})
+		)(this);
+		var me = this;
+		this.$use(function(next){
+			me.opts.changeTitle('申请分销伙伴-第二步');
+			this.submitted = false;
+			this.disabled = false;
+			next();
+		})
+		this.apply = e => {
+			if (!this.forms['fxForm'].$validate()) {
+				this.submitted = true;
+				return false;
+			}
+			let fxer = {
+				name: this['fxer.name'].value,
+				telephone: this['fxer.telephone'].value
+			} 
+			this.disabled = true;
+			$.post('/fx/apply', fxer).then(data=>{
+				this.submitted = false;
+				this.disabled = false;
+				riot.route('/fx/result');
+			})
+			
+			setTimeout(function() {this.disabled = false;}, 5000);
+		}
+	</script>
+</fx-apply>

@@ -1,0 +1,29 @@
+require('./order-list.html');
+require('./order-detail.html');
+require('./order-refund.html');
+
+<order show="{show}">
+	<order-list></order-list>
+	<order-detail></order-detail>
+	<order-refund></order-refund>
+	<script>
+		import partakerActions from '../partaker/partaker.actions';
+
+		this.mixin('router');
+		this.$routeConfig([
+			{
+				path: '/list',
+				name: 'order-list'
+			},
+			{
+				path: '/_:id',
+				name: 'order-detail',
+				resolve: (next, ctx) => context.store.dispatch(partakerActions.loadPartakerById(ctx.request.params.id, next))
+			},
+			{
+				path: '/_:id/refund',
+				name: 'order-refund'
+			}
+		])
+	</script>
+</order>

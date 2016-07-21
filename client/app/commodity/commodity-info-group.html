@@ -1,0 +1,185 @@
+<commodity-info-group show="{show}">
+  <div class="header_banners11">开团</div>
+  <div style="padding: 0 10px;">
+	<!--开团分享团-->
+	<img style="margin: 20px 0;max-width: 100%;" riot-src="http://91pt.oss-cn-beijing.aliyuncs.com/home/ymyimg/kt-fxt.png" 
+	if="{commodity.status.model === 'share'}"/>
+	<!--开团佣金团-->
+	<img style="margin: 20px 0;max-width: 100%;" riot-src="http://91pt.oss-cn-beijing.aliyuncs.com/home/ymyimg/kt-yjt.png" 
+	if="{commodity.status.model === 'distribution'}"/>
+	<!--开团阶梯团-->
+	<img style="margin: 20px 0;max-width: 100%;" riot-src="http://91pt.oss-cn-beijing.aliyuncs.com/home/ymyimg/kt-jtt.png" 
+	if="{commodity.status.model === 'ladder'}"/>
+  </div>
+
+  <form class="form-horizontal address_form" name="postForm" novalidate>
+	<div class="form-group" class="{'has-error' : postForm.name.$invalid && submitted}">
+      <label class="col-xs-3 control-label" style="width: 15%;">姓名:</label>
+	  <div class="col-xs-9">
+		<input type="text" name="name" class="form-control noborder" placeholder="请输入您的姓名" oninput="{opts.onChangeAddressName}" minlength="2" maxlength="20" required />
+		<p show="{forms['postForm'].name.$invalid && submitted}" class="help-block">姓名必须填写.</p>
+		<p show="{forms['postForm'].name.$error.minlength && submitted}" class="help-block">姓名字数太少.</p>
+		<p show="{forms['postForm'].name.$error.maxlength && submitted}" class="help-block">姓名字数太多.</p>
+	  </div>
+	</div>
+	<div class="form-group" class="{'has-error' : postForm.telephone.$invalid && submitted}">
+	  <label class="col-xs-3 control-label" style="width: 15%;">手机号:</label>
+	  <div class="col-xs-9">
+		<input type="number" oninput="{opts.onChangeAddressPhone}" pattern="^1[3|4|5|7|8]\d\{9\}$" name="telephone" class="form-control noborder" placeholder="请输入您的手机号" ng-model="address.telephone" required>
+		<p show="{forms['postForm'].telephone.$invalid && forms['postForm'].telephone.$error.required && submitted}" class="help-block">手机号必须填写.</p>
+		<p show="{forms['postForm'].telephone.$invalid && forms['postForm'].telephone.$error.pattern && submitted}" class="help-block">手机号格式有误.</p>
+	  </div>
+	</div>
+	<!--<div class="form-group"  style="height: 50rem;border: none;"></div>-->
+	<div class="form-group" show="{commodity.coll}">
+	  <label class="col-xs-3 control-label">所在省:</label>
+	  <div class="col-xs-3" style="width: 72%;background-color: #fff;">
+		<select class="form-control" onchange="{opts.onChangeAddressProvince}">
+		  <option value="">省份</option>
+		  <option each="{province in opts.provinces}" name="{province.id}">{province.name}</option>
+		</select>
+	  </div>
+	</div>
+	<div class="form-group" show="{commodity.coll}">
+	  <label class="col-xs-3 control-label">所在市:</label>
+	  <div class="col-xs-3" style="width: 72%;background-color: #fff;">
+		<select class="form-control" onchange="{opts.onChangeAddressCity}">
+	      <option value="">城市</option>
+		  <option each="{city in opts.cities}" name="{city.id}">{city.name}</option>
+		</select>
+	  </div>
+	</div>
+	<div class="form-group" show="{commodity.coll}">
+	  <label class="col-xs-3 control-label">区&nbsp;/&nbsp;县</label>
+	  <div class="col-xs-3" style="width: 72%;background-color: #fff;">
+		<select class="form-control" onchange="{opts.onChangeAddressDistrict}">
+		  <option value="">区县</option>
+		  <option each="{district in opts.city.district}">{district.name}</option>
+		</select>
+	  </div>
+	</div>
+	<div class="form-group" class="{ 'has-error' : forms['postForm'].address.$invalid && submitted}" if="commodity.coll">
+	  <label class="col-xs-3 control-label">详细地址:</label>
+	  <div class="col-xs-9">
+		<input type="text" oninput="{opts.onChangeAddressDetail}" name="address" class="form-control" placeholder="请输入邮寄地址" ng-model="address.address" maxlength="255">
+		<p show="{forms['postForm'].address.$error.maxlength}" class="help-block">邮寄地址字数太多.</p>
+	  </div>
+	</div>
+	<div class="form-group" if="{commodity.coll}" style="height: 20rem;border: none;"></div>
+	<div class="form-group" if="{!commodity.coll}" style="height: 40rem;border: none;"></div>
+	<!--<div class="form-groupbu"  ng-if="commodity.coll">
+	  拼团成功后，所有团员的商品将运至该收货地址由团长代收
+	</div>-->
+  </form>
+
+  <div class="wantbe2">
+	<div>
+  	  <button class="wantbe1 " onclick="{onSubmit}">确定</button>
+	</div>
+  </div>
+
+  <script>
+	import {connect} from '../../framework/riot-redux';
+	import actions from './commodity.actions';
+	import documentActions from '../document/document.actions';
+	connect(
+	  state=>({
+			user: state.user,
+			route: state.route,
+			provinces: state.commProvinces,
+			cities: state.commCities,
+			city: state.commSelectArea,
+			comm: state.comm,
+			address: state.commGroupAddress,
+			province: state.commGroupProvince
+	  }),
+	  dispatch=>({
+			onChangeAddressName: e => dispatch(actions.updateCommGroupAddress({name: e.target.value})),
+			onChangeAddressPhone: e => dispatch(actions.updateCommGroupAddress({telephone: e.target.value})),
+			onChangeAddressDetail: e => dispatch(actions.updateCommGroupAddress({address: e.target.value})),
+			onChangeAddressProvince: e => dispatch({type: 'commGroupProvince', payload: e.item}),
+			onChangeAddressCity: e => dispatch({type: 'commSelectArea', payload: e.item}),
+			onChangeAddressDistrict: e => dispatch({type: 'commSelectArea', payload: e.item}),
+			getCommProvinces: () => dispatch(actions.getCommProvinces()),
+			getCommCities: () => disptach(actions.getCommCities()),
+			fetchCommGroupAddress: callback => dispatch(actions.fetchCommGroupAddress(callback)),
+			changeDocGroup: ({type, meta}) => dispatch(documentActions.changeDocGroup({type, meta})),
+			updateCommGroupAddress: meta => dispatch(actions.updateCommGroupAddress(meta))
+	  })
+	)(this);
+	let me = this;
+	this.mixin('router');
+	this.mixin('form');
+	this.useForm();
+	this.submitted = false;
+
+	this.on('mount', ()=>{
+	  this.opts.getCommProvinces();
+	})
+
+	this.onProvinceChange = e => {
+	  if(!e.item) return;
+	  this.opts.getCommCities(e.item);
+	}
+
+	this.on('update', ()=>{
+	})
+
+	this.$use(function(next){
+	  this.submitted = false;
+	  context.store.dispatch({type: 'changeTitle', payload: '开团'});
+	  context.store.dispatch({type: 'hideBar', payload: true});
+	  me.addr_stic = {};
+	  me.addr_had = false;
+	  var user = me.opts.user;
+	  context.store.dispatch({
+		type: 'initCommGroupAddress',
+		payload: {
+		  name: user ? user.name: '',
+		  telephone: user ? user.telephone: '',
+		  address: user ? user.address: '',
+		  province: user?user.province: '',
+		  city: user?user.city: '',
+		  district: user?user.district: '',
+		}
+	  });
+	  me.opts.fetchCommGroupAddress(data=>{
+		me.addr_stic = $.util.clone(data);
+		me.addr_had = true;
+	  });
+	  if(me.opts.comm.model === 'share'){
+	    me.opts.changeDocGroup({type: 'url', meta: 'model4groupLong'});
+	  }
+	  if(me.opts.comm.model === 'distribution'){
+			me.opts.changeDocGroup({type: 'url', meta: 'groupLong'});
+	  }
+	  next();
+	})
+
+	this.cancel = () => {
+	  riot.route('/commodity/_' + this.opts.comm.id);
+	};
+
+	this.onSubmit = e => {
+	  this.submitted = true;
+	  if(!this.forms['postForm'].$validate()){
+			return;
+	  }
+	  if(this.opts.province){
+			me.opts.updateCommGroupAddress({province: $.util.omit(this.opts.province, 'py')});
+	  }
+	  if(this.opts.city){
+			me.opts.updateCommGroupAddress({city: $.util.omit(this.opts.city, 'py')});
+	  }
+	  if(this.opts.city && this.opts.city.district){
+			me.opts.updateCommGroupAddress({district: this.opts.city.district});
+	  }
+	  if (!$.util.deepEqual(this.opts.address, this.addr_stic)){
+			me.opts.updateCommGroupAddress({id: ''});
+	  }
+	  $.post(`/commodity/${this.opts.comm.id}/group`, this.opts.address).then(data=>{
+			riot.route('/group/_' + data.id);
+	  })
+	}		
+  </script>
+</commodity-info-group>

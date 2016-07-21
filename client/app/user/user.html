@@ -1,0 +1,16 @@
+require('./user-redpacket.html');
+
+<user show="{show}">
+	<div>
+		<user-redpacket></user-redpacket>
+	</div>
+	<script>
+		this.mixin('router');
+		this.$routeConfig([
+			{
+				path: '/redpacket',
+				name: 'user-redpacket'
+			}
+		])
+	</script>
+</user>

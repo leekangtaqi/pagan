@@ -1,0 +1,78 @@
+<group-info-replenishment>
+	<div class="dwdw">
+		<img style="max-width: 100%;" riot-src="{'http://91pt.oss-cn-beijing.aliyuncs.com/home/ymyimg/wk.jpg'}" />
+		<div class="tc"></div>
+		<form class="pleft">
+			<div class="wkimg">
+				<img riot-src="{'http://img1.ifindu.cn/crop/w_430/h_300'+ opts.group.commodity.cover}" alt="{opts.group.commodity.name}" if="{opts.group.commodity.cover}" style="height:55px;vertical-align: 6px;">
+				<img class="img-responsive" holder="holder.js/100px85/#EF4453:#ffffff/text:No Cover" if="{!opts.group.commodity.cover}" style="height: 55px;">
+				<p>{opts.group.commodity.name}</p>
+			</div>
+			<div class="wkimg">
+				<span class="wkspan">参团人数:</span><span>{opts.group.num_order}人</span>
+			</div>
+			<div class="wkimg">
+				<span class="wkspan">当前价格:</span><span>{$.util.filter.currency(opts.money.price)}</span>
+			</div>
+			<div class="wkimg">
+				<span class="wkspan">已付定金:</span><span>{$.util.filter.currency(opts.group.commodity.ladder.prepay)}</span>
+			</div>
+			<div class="wkimg">
+				<span class="wkspan">需补尾款:</span>
+				<!--补尾款需要加邮费-->
+				<span class="red" class="{gray:!isSelling}">{$.util.filter.currency(opts.money.price + opts.deliveryPayment - opts.group.commodity.ladder.prepay)}</span>
+			</div>
+			<!--邮费添加-->
+			<div class="wkimg" if="{opts.deliveryPayment}">
+				<span class="wkspan" style="padding-right: 28px;">邮费:</span>
+				<span class="red">{$.util.filter.currency(opts.deliveryPayment)}</span>
+			</div>
+			
+			<div class="redtz" if="{!isSelling}">你所参加的拼团已过活动有效期，无法再补尾款。感谢参与本次拼团活动！</div>
+			<!--可以补款时显示过时隐藏-->
+			<img class="ptygq" riot-src="{'http://91pt.oss-cn-beijing.aliyuncs.com/home/ymyimg/ptygq.png'}" 
+				if="{!isSelling}"/>
+			<div class="fgroup bt" if="{isSelling}">
+					<span class="myspa1" style="font-size: 14px;">需补款：{$.util.filter.currency(opts.money.price + opts.deliveryPayment - opts.group.commodity.ladder.prepay)}</span>
+					<span if="{deliveryPayment}" style="font-size: 12px;">(包括邮费: {$.util.filter.currency(opts.deliveryPayment)})</span>
+					<button type="submit" class="btn btn-submit1" style="color:#fff;" onclick="{replenishment}">确认支付</button>
+			</div>
+		</form>
+	</div>
+	<script>
+		import {connect} from 'riot-redux';
+		import moment from '../../framework/moment';
+		import partakerActions from '../partaker/partaker.actions';
+		import actions from './group.actions';
+		connect(
+			state => ({
+				group: state.group,
+				deliveryPayment: state.deliveryPayment,
+				money: state.groupMoney
+			}),
+			dispatch => ({
+				changeTitle: title => {dispatch({type: 'changeTitle', payload: title})},
+				replenishment: id => {dispatch(actions.replenishment(id))},
+				findPartakerAndGroupByGroupIdAndUserId: id => {dispatch(partakerActions.findPartakerAndGroupByGroupIdAndUserId(id))}
+			}) 
+		)(this)
+
+		this.on('update', () => {
+			if(this.opts.group && this.opts.group.commodity){
+				this.isSelling = moment().isBefore(this.opts.group.commodity.time.end);
+			}
+		});
+
+		this.on('mount', () => {
+			this.opts.changeTitle('拼团补款');
+			this.opts.findPartakerAndGroupByGroupIdAndUserId(this.opts.id);
+		})
+
+		this.replenishment = e => {
+			if(!this.opts.group.id){
+				return;
+			}
+			this.opts.replenishment(this.opts.group.id);
+		};
+	</script>
+</group-info-replenishment>

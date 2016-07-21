@@ -1,0 +1,287 @@
+<group-info-join>
+
+	<div>
+		<div class="header_banners11">参团</div>
+		<div style="padding: 0 10px;">
+			<img style="margin: 20px 0 30px 0;max-width: 100%;" 		riot-src="http://91pt.oss-cn-beijing.aliyuncs.com/home/ymyimg/ct-fxt.png"
+			if="{opts.group.commodity.status.model === 'share'}"/>
+			<img style="margin: 20px 0 30px 0;max-width: 100%;" 		riot-src="http://91pt.oss-cn-beijing.aliyuncs.com/home/ymyimg/ct-fxt.png"
+			if="{opts.group.commodity.status.model === 'distribution'}"/>
+			<img style="margin: 20px 0 30px 0;max-width: 100%;" 		riot-src="http://91pt.oss-cn-beijing.aliyuncs.com/home/ymyimg/ct-jtt.png"
+			if="{opts.group.commodity.status.model === 'ladder'}"/>
+		</div>
+		<form class="form-horizontal address_form" name="joinForm" novalidate>
+			<input type="hidden" ng-model="address.id">
+			<div class="form-group" class="{'has-error' : forms['joinForm'].name.$invalid && opts.stateView.submitted}">
+				<label class="col-xs-3 control-label">您的姓名:</label>
+				<div class="col-xs-9">
+				<input type="text" name="name" class="form-control noborder" placeholder="{forms['joinForm'].name.$error.required && submitted?'姓名必须填写':''}" oninput="{onChangeName}" minlength="2" maxlength="20" required />
+				<p if="{forms['joinForm'].name.$error.minlength}" class="help-block">姓名字数太少.</p>
+				<p if="{forms['joinForm'].name.$error.maxlength}" class="help-block">姓名字数太多.</p>
+				</div>
+			</div>
+			<div class="form-group" class="{'has-error' : forms['joinForm'].telephone.$invalid && opts.stateView.submitted}">
+				<label class="col-xs-3 control-label">联系电话:</label>
+				<div class="col-xs-9">
+				<input type="telephone" name="telephone" class="form-control noborder" placeholder="{forms['joinForm'].telephone.$error.required && opts.stateView.submitted?'手机号必须填写':''}" oninput="{onChangeTelephone}"  minlength="6" maxlength="20" required>
+				<p if="{forms['joinForm'].telephone.$error.minlength}" class="help-block">电话最少6位.</p>
+				<p if="{forms['joinForm'].telephone.$error.maxlength}" class="help-block">电话最多20位.</p>
+				</div>
+			</div>
+			<div class="form-group"
+				class="{'has-error' : forms['joinForm'].province.$invalid && opts.stateView.submitted}"
+				if="{!opts.group.commodity.coll && opts.group.commodity.need_addr}">
+				<label class="col-xs-3 control-label">所在省:</label>
+				<div class="col-xs-3" style="width: 72%;background-color: #fff;">
+          <select name="province" class="form-control" required onchange="{onSelectJoinGroupProvince}">
+            <option value="">省份</option>
+            <option value="{JSON.stringify(province)}" each="{province in opts.provinces}">{province.name}</option>
+          </select>
+					<p if="{forms['joinForm'].province.$error.required}" class="help-block">请选择省份.</p>
+				</div>
+			</div>
+			<div class="form-group"
+				class="{'has-error' : forms['joinForm'].city.$invalid && opts.stateView.submitted}"
+				if="{!opts.group.commodity.coll && opts.group.commodity.need_addr}">
+				<label class="col-xs-3 control-label">所在市:</label>
+				<div class="col-xs-3" style="width: 72%;background-color: #fff;">
+          <select name="city" class="form-control" required onchange="{onSelectJoinGroupCity}">
+            <option value="">城市</option>
+            <option value="{JSON.stringify(city)}" each="{city in opts.cities}">{city.name}</option>
+          </select>
+					<p if="{forms['joinForm'].city.$error.required}" class="help-block">请选择城市.</p>
+				</div>
+			</div>
+			<div class="form-group"
+				class="{'has-error' : forms['joinForm'].district.$invalid && opts.stateView.submitted}"
+				if="{!opts.group.commodity.coll && opts.group.commodity.need_addr}">
+				<label class="col-xs-3 control-label">区&nbsp;/&nbsp;县</label>
+				<div class="col-xs-3" style="width: 72%;background-color: #fff;">
+					<select name="district" class="form-control" onchange="{onSelectJoinGroupDistrict}" required>
+						<option value="">区县</option>
+            <option value="{JSON.stringify(district)}" each="{district in (opts.area.city.districts || opts.area.city.district)}">{district.name}</option>
+					</select>
+					<p if="{forms['joinForm'].district.$error.required}" class="help-block">请选择区县.</p>
+				</div>
+			</div>
+			<div class="form-group" class="{ 'has-error' : forms['joinForm'].address.$invalid && opts.stateView.submitted}" if="{!opts.group.commodity.coll && opts.group.commodity.need_addr}">
+				<label class="col-xs-3 control-label">详细地址:</label>
+				<div class="col-xs-9">
+				<input type="text" oninput="{onChangeAddress}" name="address" class="form-control noborder" placeholder="{forms['joinForm'].address.$error.required && opts.stateView.submitted?'请填写收获地址':''}" maxlength="255" required>
+				<p if="{forms['joinForm'].address.$error.maxlength}" class="help-block">收货地址字数太多.</p>
+				</div>
+			</div>
+			
+			<div if="{opts.group.commodity.status.model === 'share'}">
+			<div class="form-group" if="{opts.deliveryPayment}">
+				<label class="col-xs-3 control-label">邮费:</label>
+				<div class="col-xs-9">
+				<input type="text" name="postage" class="form-control noborder" placeholder="{$.util.filter.currency(opts.deliveryPayment)}" required>
+			</div>
+			</div>
+			</div>
+			<div if="{opts.group.commodity.status.model === 'distribution'}">
+        <div class="form-group" if="{opts.deliveryPayment}">
+          <label class="col-xs-3 control-label">邮费:</label>
+          <div class="col-xs-9">
+            <input type="text" name="postage" class="form-control noborder" placeholder="{$.util.filter.currency(opts.deliveryPayment)}" required>
+          </div>
+        </div>
+			</div>
+
+			<div class="form-group"
+				class="{'has-error' : forms['joinForm'].poi.$invalid && opts.stateView.submitted}"
+				if="{opts.group.commodity.pois.length && !opts.group.commodity.poitag}">
+				<label class="col-xs-3 control-label">自提门店:</label>
+				<div class="col-xs-9">
+					<select
+						name="poi"
+						class="form-control"
+						ng-model="address.poi"
+            onchange="{onChangePoi}"
+						required>
+					  <option value="">-- {forms['joinForm'].poi.$error.required && submitted ? '请选择门店' : '选择门店'} --</option>
+            <option each="{business in opts.group.commodity.pois}" value="{JSON.stringify(business)}">{business.base_info.business_name+(business.base_info.branch_name?'('+business.base_info.branch_name+')':'')}</option>
+					</select>
+				</div>
+			</div>
+		
+			<div class="form-group"
+				class="{'has-error' : forms['joinForm'].poi.$invalid && opts.stateView.submitted}"
+				if="{opts.group.commodity.poitag && opts.group.commodity.poitag.length > 0}">
+				<label class="col-xs-3 control-label">门店自提:</label>
+				<div class="col-xs-9">
+					<input type="hidden" name="poi" value="{opts.address.poi}" required>
+					<p class="form-control-static sjdjtcont"
+						onclick="{poiSelModal}"
+						if="{opts.address.poi}">{opts.address.poi.base_info.business_name + (opts.address.poi.base_info.branch_name ? '(' + opts.address.poi.base_info.branch_name + ')' : '')}
+          </p>
+					<p class="form-control-static" if="{!opts.address.poi}">
+						<span class="sjdjt" if="{opts.pois}" onclick="{poiSelModal}">-- {forms['joinForm'].poi.$error.required && opts.stateView.submitted ? '请选择门店' : '选择门店'} -- </span>
+						<span class="sjdjt" if="{!opts.pois}">-- 门店加载中 -- </span>
+					</p>
+				</div>
+			</div>
+
+			<div class="form-group">
+					<div class="col-xs-11">
+						<input type="text" class="form-control"
+							style="margin-left: 18px;-webkit-appearance:none;background: #FFFFFF;"
+              oninput="{onChangeRemark}"
+							placeholder="{opts.group.commodity.remark ? opts.group.commodity.remark : '给卖家留言'}"/>
+					</div>
+			</div>
+
+			<div class="form-group" if="{!opts.group.commodity.coll}" style="height: 20rem;border: none;"></div>
+			<div class="form-group" if="{opts.group.commodity.coll}" style="height: 40rem;border: none;"></div>
+
+			<div class="fgroup">
+					<span if="{opts.group.commodity.status.model === 'ladder'}">
+					  <span style="color: #FF0000;font-size: 14px;">需支付定金:</span>
+					  <span class="myspa" style="font-size: 14px;color: #FF0000;">{$.util.filter.currency(opts.group.commodity.ladder.prepay)}</span>
+					</span>
+					<span if="{opts.group.commodity.status.model === 'share'}" >
+					  <span class="myspn" style="font-size: 14px;color: #FF0000;">合计</span>
+					  <span class="myspa" style="font-size: 14px;color: #FF0000;">{$.util.filter.currency(totalFee + opts.deliveryPayment)}</span>
+					  <span if="{opts.deliveryPayment}" style="font-size: 12px;">(包括邮费: {$.util.filter.currency(opts.deliveryPayment)})</span>
+					</span>
+					<span if="{opts.group.commodity.status.model === 'distribution'}" >
+					  <span class="myspn" style="font-size: 14px;color: #FF0000;">合计</span>
+					  <span class="myspa" style="font-size: 14px;color: #FF0000;">{$.util.filter.currency(totalFee + opts.deliveryPayment)}</span>
+					  <span if="{opts.deliveryPayment}" style="font-size: 12px;">(包括邮费: {$.util.filter.currency(opts.deliveryPayment)})</span>
+					</span>
+					<button onclick="{participate}" class="btn btn-submit1" style="color:#fff;" disabled="{opts.stateView.submiting}">{opts.stateView.submiting ? '支付中...' : '确认支付'}</button>
+			</div>
+		</form>
+	</div>
+	<script>
+    import {connect} from '../../framework/riot-redux';
+    import commActions from '../commodity/commodity.actions';
+    import docActions from '../document/document.actions';
+    import actions from './group.actions';
+    import Cookies from '../../framework/cookie';
+    this.mixin('router');
+    this.mixin('form');
+    this.useForm();
+    connect(
+      state=>({
+        group: state.group,
+        stateView: state.joinGroupViewMeta,
+        merchant: state.merchant,
+        commInfoAlbums: state.commInfoAlbums,
+        route: state.route,
+        user: state.user,
+        pois: state.groupPois,
+        provinces: state.joinGroupProvinces,
+        cities: state.joinGroupCities,
+        area: state.selectJoinGroupAddress,
+        deliveryPayment: state.deliveryPayment,
+        address: state.joinGroupAddress,
+        addr_stic: state.joinGroupAddrStic
+      }),
+      dispatch=>({
+        participate: () => {dispatch(actions.participate())},
+        updateJoinGroupAddress: address => {dispatch(actions.updateJoinGroupAddress(address))},
+        loadJoinGroupAddress: () => {dispatch(actions.loadJoinGroupAddress())},
+        changeJoinGroupProvince: (province, tag) => {dispatch(actions.changeJoinGroupProvince(province, tag))},
+        initJoinGroupAddress: user => {dispatch(actions.initJoinGroupAddress(user))},
+        loadGroupByIdAndInitArea: (id, done) => {dispatch(actions.loadGroupByIdAndInitArea(id, done))},
+        getComm: (id, done) => {dispatch(commActions.getComm(id, done))},
+        getCommInfoAlbums: (id, done) => {dispatch(commActions.getCommInfoAlbums(id, done))},
+        changeDocGroup: (action, done) => {dispatch(docActions.changeDocGroup(action, done))},
+        changeCommId: id => {dispatch(commActions.changeCommId(id))}
+      })
+    )(this);
+
+    this.on('update', () => {
+      if(this.opts.group && this.opts.group.commodity){
+        if(this.opts.group.commodity.consumeType === '1'
+        && this.opts.group.commodity.logistic
+        && this.opts.group.commodity.logistic.type === '1'
+        ){
+          this.isLimitPurchase = true;
+        }
+        this.totalFee = this.opts.group.commodity.model === 'ladder' ? 
+            this.opts.group.commodity.ladder.prepay : 
+            this.opts.group.commodity.prepay;
+      }
+    })
+
+    this.on('mount', () => {
+      let disptach = context.store.dispatch;
+      disptach({type: 'changeTitle', payload: '参团'});
+      this.isLimitPurchase = false;
+      this.totalFee = 0;
+      if(this.opts.user){
+        this.opts.initJoinGroupAddress(opts.user);
+      }
+      context.store.dispatch({type: 'setJoinGroupAddrStic', payload: {}});
+      context.store.dispatch({type: 'setJoinGroupAddrHad', payload: false});
+      this.opts.loadJoinGroupAddress();
+      this.opts.loadGroupByIdAndInitArea(this.opts.id);
+    })
+
+    this.onChangePoi = e => e.target.value && this.opts.updateJoinGroupAddress({poi: JSON.parse(e.target.value)});
+    this.onChangeTelephone = e => this.opts.updateJoinGroupAddress({telephone: e.target.value});
+    this.onChangeName = e => this.opts.updateJoinGroupAddress({name: e.target.value});
+    this.onChangeRemark = e => this.opts.updateJoinGroupAddress({remark: e.target.value});
+    this.onChangeAddress = e => this.opts.updateJoinGroupAddress({address: e.target.value});
+
+    this.onSelectJoinGroupProvince = e => {
+      if(!e.target.value){
+        return;
+      }
+      this.opts.changeJoinGroupProvince(JSON.parse(e.target.value), this);
+    }
+
+    this.onSelectJoinGroupCity = e => {
+      context.store.dispatch({type: 'setDeliveryPayment', payload: 0});
+      if(!e.target.value){
+        return;
+      }
+      context.store.dispatch({type: 'setDeliveryPayment', payload: 0});
+      context.store.dispatch({type: 'selectJoinGroupCity', payload: JSON.parse(e.target.value)});
+    }
+
+    this.onSelectJoinGroupDistrict = e => {
+      context.store.dispatch({type: 'setDeliveryPayment', payload: 0});
+      let district = e.target.value;
+      if(!district){
+        return
+      }
+      if(!this.isLimitPurchase){
+        return;
+      }
+      district = JSON.parse(district);
+      context.store.dispatch({type: 'selectJoinGroupDistrict', payload: district});
+      let tpl = context.store.getState().joinGroupTemplate;
+      var item = tpl.items.filter(i =>
+        i.deliveryArea.filter(area => area.id === district.id).length >0
+      )[0];
+      context.store.dispatch({type: 'setDeliveryPayment', payload: item.payment});
+    }
+
+    this.participate = () => {
+      if (!this.forms['joinForm'].$validate()) {
+        context.store.dispatch({type: 'setJoinGroupSubmited', payload: true});
+        return false;
+      }
+      this.opts.participate();
+    };
+
+    this.poiSelModal = params => {
+      var modal = widgets.Modal.open({
+        tag: 'group-poi-modal',
+        size: 'lg',
+        props: {
+          pois: this.opts.pois,
+          address: this.opts.address
+        }
+      })
+      modal.on('dismiss', poi => {
+        context.store.dispatch({type: 'updateJoinGroupAddress', payload: {poi}})
+      })
+    }
+
+	</script>
+</group-info-join>

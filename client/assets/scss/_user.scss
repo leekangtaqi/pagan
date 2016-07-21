@@ -1,0 +1,28 @@
+.input-group .input-login{box-shadow:none;}
+.input-group .input-login:focus{border:1px solid #ccc;box-shadow:none;}
+.top-banners {
+	padding:10px 5px;
+}
+.top-banners .btn{
+  border-radius: 20px;
+  color: red;
+  padding: 5px 20px;
+  font-size: 14px;
+}
+.top-banners .top-title{
+  font-size:20px;
+	color:white;
+}
+.no-load{
+  text-align:center;
+  margin:50px auto;
+}
+.no-load div{
+  min-width:90px;
+  min-height:82px;
+  background-image:url(http://static.ifindu.cn/91pintuan/images/no-load.png);
+	background-repeat:no-repeat;
+	background-size:90px 82px;
+	background-position:center;
+	margin-bottom:10px;
+}

@@ -1,0 +1,80 @@
+<commodity-list if="{show}">
+  <on-scroll
+    if="{opts.merchant.pubno.status.shelf === 1}"
+    infinite-scroll='{nextPage}'
+    infinite-scroll-disabled='{opts.commodityList.busy}'
+    infinite-scroll-distance='{100}'
+  >
+    <div class="panel" each="{commodity in parent.opts.commodityList.items}" style="margin-bottom:10px">
+      <div class="mycomm-fontsize">
+        <div class="comm-list-img">
+          <span>{JSON.stringify(commodity.info)}</span>
+          <!--ui-sref="commodity.info({id:commodity.id})"-->
+          <a href="/commodity/_{commodity.id}"  target-for-android>
+            <!--holder.js/100px149?theme=gray&text=91pintuan.com[91拼团]-->
+          <img-lazy-loader height="{300}" width="{430}" holder="http://img4.imgtn.bdimg.com/it/u=2408370625,380818695&fm=21&gp=0.jpg" src="{'http:\/\/img1.ifindu.cn\/crop\/w_430\/h_300'+commodity.cover}" style="margin:auto" class="img-responsive" alt="{commodity.name}"></img-lazy-loader>
+          <div class="comm-title" style="background-color: #fff;opacity: 0.6;color: #000;text-overflow: ellipsis;white-space: nowrap;overflow: hidden;padding: 0 10px;">{commodity.name}</div>
+        </div>
+        <div class="img-bottom">
+          <div class="comm-list-price"style="height: 35px;">
+            <div class="comm-boxred" if="{commodity.model!=='ladder'}">
+              <div class="fontsize22 ng-binding" >{commodity.partakers}</div>
+              <p class="rct">人成团</p>
+              <div class="comm-list-line"></div>
+              <div style="float:left; font-size:16px;" class="ng-binding">{commodity.discount}</div>
+              <span class="clear"></span>
+            </div>
+            <div class="bg-primary comm-list-ladder-price" if="{commodity.model==='ladder'}">
+              <div class="comm-list-line1"></div>&nbsp;¥<span each="{ldprc, index in commodity.ladder.prices}">{ldprc.price}<i if="{index != (commodity.ladder.prices.length-1)}">/</i>&nbsp;</span>
+            </div>
+            <span class="mydel_l"><span class="fontsize2 ng-binding" style="color:#595757; font-weight:100; white-space:nowrap">原价{$.util.filter.currency(commodity.price)}</span></span>
+            <span class="clear"></span>
+          </div>
+          <div style="height: 19px;padding: 2px 10px 0px 10px;" class="comm-list-rp fontsize112" if="{commodity.coll || commodity.earnest}">
+            <span style="Line-height:14px; color:#595757" if="{commodity.earnest}">
+            团长外快<span> {$.util.filter.currency(commodity.earnest) + '元'}+</span>
+            </span>
+            <span  class="text-primary pull-right" if="{commodity.coll}">
+                团长代收团员快递
+            </span>
+          </div>
+        </div>
+      </div>
+      </a>
+    </div>
+    <icobar></icobar>
+  </on-scroll>
+
+  <script>
+    import {connect} from '../../framework/riot-redux';
+    import actions from './commodity.actions';
+    this.mixin('router');
+    connect(
+      (state)=>({
+        merchant: state.merchant,
+        title: state.title,
+        route: state.route,
+        commodityList: state.commodityList
+      }),
+      (dispatch)=>({
+        changeTitle: (text)=>{dispatch({type: 'changeTitle', payload: text})}
+        })
+    )(this)
+
+    this.nextPage = () => context.store.dispatch(actions.nextPage(this.opts.commodityList));
+
+    this.$use(function(next){
+      var params = {};
+      this.opts.changeTitle('商品列表');
+      if(this.opts.route.$state === '/commodity.tips'){
+        params = {tips:true}
+      }
+      if(this.opts.route.$state === '/'){
+        this.opts.changeTitle('');
+      }
+      context.store.dispatch({type: 'commodityListSetParams', payload: params});
+      next();
+    })
+        
+  </script>
+</commodity-list>

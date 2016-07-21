@@ -1,0 +1,120 @@
+.comm-lists{
+  margin:8px 7px;
+}
+.comm-list{
+  padding:5px;
+  font-size:18px;
+}
+.comm-list-img
+{
+  max-width:100%;
+  /* height:170px; */
+  border:solid 1px #888888;
+  position:relative;
+//border-top-right-radius: 5px;
+//border-top-left-radius: 5px;
+  overflow:hidden;
+  border:none;
+}
+
+.comm-list-img img
+{
+  /* position:absolute; */
+  left:0;
+  top:0;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
+.comm-list-img .comm-title
+{
+  width: 100%;
+  height:30px;
+  z-index:100;
+  position:absolute;
+  color:white;
+  font-size:16px;
+  Line-height:30px;
+  font-family:initial;
+  bottom: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.4);
+  padding: 0px 5px;
+}
+.comm-list-text{
+  background-color:#efefef;
+  border-bottom-right-radius: 6px;
+  border-bottom-left-radius: 6px;
+}
+.comm2-list-text{
+  background-color:#efefef;
+  border-bottom-right-radius: 6px;
+  border-bottom-left-radius: 6px;
+  padding-top:10px;
+}
+.comm-list-price{
+  padding:6px 0px 4px 0px;
+}
+.comm-list-price>span:first-child{
+  background-color:#ef4453;
+  border-top-right-radius: 20px;
+  border-bottom-right-radius: 20px;
+  padding: 5px 10px;
+  color:#ffffff;
+}
+
+.comm-list-line {
+  height:14px;
+  width:45px;
+  background-image:url(http://91pt.oss-cn-beijing.aliyuncs.com/home/ymyimg/445208800599946204.png);
+  background-repeat:no-repeat;
+  background-size:47px 18px;
+  background-position:center;
+  margin-top:6px; 
+  margin-left:7px; 
+  float:left
+}
+.comm-list-line-half {
+  height:15px;
+  background-image:url(http://91pt.oss-cn-beijing.aliyuncs.com/c_comm-list-line.png);
+  background-repeat:no-repeat;
+  background-size:86px 15px;
+  background-position:center;
+  margin-top:5px; 
+  margin-right:3px; 
+  float:left
+}
+.comm2-grp-ico{
+  background-color:#f0373d;
+  border-radius: 0px 12px 12px 0px;
+  font-size:12px;
+  font-weight: 100;
+  line-height: 24px;
+  color: white;
+  padding:3px 10px 3px 8px;
+}
+.comm-boxred {
+  padding: 0px 10px 0px 5px;
+  height: 26px;
+  line-height: 26px;
+//background: #EF4453;
+  border-radius: 0px 14px 14px 0px;
+  color: white;
+  margin-right:4px; 
+  float:left; 
+  dispaly:block
+}
+
+.comm-list-price .delete_line{
+  color: #ef4453;
+}
+.comm-list-price .delete_line span{
+  color: #888888;
+}
+.comm-list-rp{
+  line-height:14px;
+  padding: 0px 5px 5px 5px;
+  color:#888888;
+}
+.comm-list-rp span{
+  color:#ef4453;
+}

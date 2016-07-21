@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+.center-block {
+  max-width:274px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+.img-thumbnail {
+  width: 264px;
+  height: 264px;
+  margin: 5px;
+  display: inline-block;
+  width: 100% \9;
+  max-width: 100%;
+  height: auto;
+  padding: 4px;
+  line-height: 1.42857143;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  -webkit-transition: all .2s ease-in-out;
+  -o-transition: all .2s ease-in-out;
+  transition: all .2s ease-in-out;
+}
+.bg-primary {
+  text-align: center;
+  padding: 7px;
+  color: #fff;
+  background-color: #428bca;
+}
+kbd {
+  padding: 2px 4px;
+  font-size: 90%;
+  color: #fff;
+  background-color: #333;
+  border-radius: 3px;
+  -webkit-box-shadow: inset 0 -1px 0 rgba(0,0,0,.25);
+  box-shadow: inset 0 -1px 0 rgba(0,0,0,.25);
+}
+</style>
+</head>
+<body>
+<% if (src) { %>
+<div class="center-block">
+  <img src="<%- src %>" class="img-thumbnail">
+  <p class="bg-primary">长按二维码，点击 <kbd>保存图片</kbd> 按钮</p>
+  <p><%- errmsg %></p>
+</div>
+<% }else{%>
+暂无二维码
+<% } %>
+</body>
+</html>
