@@ -1,6 +1,6 @@
 # pagan
 
-<img width="30%" src="http://img2.imgtn.bdimg.com/it/u=3943416514,3665904824&fm=21&gp=0.jpg"/>
+![image](https://github.com/leekangtaqi/pagan/raw/master/client/assets/images/logo.jpg)
 
 Front-end framework based on riot, redux.
 
