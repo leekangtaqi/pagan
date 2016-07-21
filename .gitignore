@@ -1,0 +1,7 @@
+/node_modules
+.idea
+/.DS_Store
+/public/js
+/public/.DS_Store
+/web/.*
+/web/stylesheets/
