@@ -1,4 +1,7 @@
 # pagan
+
+<img width="30%" src="http://img5.duitang.com/uploads/item/201404/18/20140418012123_NGvxV.jpeg"/>
+
 Front-end framework based on riot, redux.
 
 ---
