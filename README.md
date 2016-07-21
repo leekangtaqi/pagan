@@ -26,8 +26,6 @@ app.set('mode', 'browser');
 
 app.set('context', { store: app.store, hub: router.hub, tags: {} });
 
-app.mixin('form', form);
-
 app.router(router);
 
 app.start(async () => {
