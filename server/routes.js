@@ -10,10 +10,7 @@ module.exports = function(app) {
 
   // Insert routes below
   app.use('/config', require('./api/config'));
-  app.use('/qrcode', require('./api/qrcode'));
-  app.use('/qrgun', require('./api/qrgun'));
-  app.use('/audio', require('./api/audio'));
-  app.use('/api', require('./api/api'));
+  app.use('/user', require('./api/user'));
   
   // All undefined asset or api routes should return a 404
   app.route('/:url(api|auth|components|app|bower_components|assets)/*')

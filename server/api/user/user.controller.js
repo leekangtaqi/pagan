@@ -8,5 +8,5 @@ exports.index = function(req, res) {
 };
 
 exports.demo = function(req, res) {
-  res.render('audio.html');
+  res.render('user.html');
 };

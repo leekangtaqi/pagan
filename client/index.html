@@ -9,7 +9,6 @@
     <script src="http://res.wx.qq.com/open/js/jweixin-1.1.0.js"></script>
   </head>
   <body>
-    
     <app></app>
     <alert></alert>
     <modal></modal>
@@ -21,7 +20,12 @@
       var body = document.getElementsByTagName('body')[0]; 
       var script = document.createElement('script'); 
       script.type = 'text/javascript';
-      script.src = window.location.origin + ':8080' + '/client/app/bundle.js'; 
+      let parts = window.location.origin.split(':');
+      let refinedOrigin = window.location.origin;
+      if(parts.length && parts[2]){
+        refinedOrigin = window.location.origin.replace(parts[2], '');
+      }
+      script.src = refinedOrigin + '8080' + '/client/app/bundle.js'; 
       body.appendChild(script);
     </script>
     

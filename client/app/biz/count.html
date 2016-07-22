@@ -1,14 +1,21 @@
 <count>
-	<p>Current Count is {}</p>
-	<input type="button" value="+" onclick="{}">
-	<input type="button" value="-" onclick="{}">
+	<p>Current Count is {opts.count}</p>
+	<input class="btn btn-default" type="button" value="+" onclick="{increase}">
+	<input class="btn btn-default" type="button" value="-" onclick="{decrease}">
 
 	import {connect} from 'riot-redux';
+	import actions from './count.actions.js';
 
 	connect(
-		state => ({}),
-		dispatch => ({})
-	)
-
-
+		state => ({
+			count: state.count
+		}),
+		dispatch => ({
+			increase: () => dispatch(actions.increase()),
+			decrease: () => dispatch(actions.decrease())
+		})
+	)(this)
+	
+	this.increase = e => this.opts.increase();
+	this.decrease = e => this.opts.decrease();
 </count>
