@@ -66,13 +66,13 @@ source for more detail
 
 ##Startup
 
-＊ env development (using webpack-dev-server in backend) : 
+* **env development** (using webpack-dev-server in backend) : 
 
 gulp dev
 
 open browser and type: localhost:9182
 
-＊ env prodution :
+* **env prodution** :
 
 gulp build     
 
