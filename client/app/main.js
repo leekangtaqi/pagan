@@ -25,22 +25,12 @@ app.start(async () => {
     await bootstrap(app.store);
 
     app.hub.on('history-pending', (from, to, $location, ctx, next) => {
-        if(ctx.request.body.authenticate && !Cookies.get('token')) {
-            // let query = ctx.request.query;
-            // let fxer = Cookies.get('fxer');
-            // if(fxer && !query.hasOwnProperty('fxer')){
-            //     query['fxer'] = fxer;
-            // }
-            // return $.get(`/wechat/client?referer=${$location}&${$.util.querystring.stringify(query)}`).then(link => window.location.href = link.link);
-        }
+        //for filter
         next && next();
     });
 
     app.hub.on('history-resolve', (from, to, ctx, hints) => {
-        if(Cookies.get('fxer') && hints.length === 1){
-            router.hub.search('fxer', Cookies.get('fxer'));
-        }
-        document.body.scrollTop = document.documentElement.scrollTop = 0;
+        //todo
     })
 
     require('./app.html');

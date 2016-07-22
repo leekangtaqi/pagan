@@ -67,9 +67,14 @@ const thunk = store => next => action =>
         action(store.dispatch, store.getState) :
         next(action);
 
-export default {
+let middlewares = {
     timeoutScheduler, vanillaPromise, readyStatePromise, thunk
 }
-// export default {
-//     logger, timeoutScheduler, vanillaPromise, readyStatePromise, thunk
-// }
+
+let env = process.env.NODE_ENV === 'production' ? 'production' : 'development';
+
+if(env == 'development'){
+    middlewares['logger'] = logger;
+}
+
+export default middlewares;
