@@ -64,17 +64,17 @@ require('path-to-nest');
 ##Example
 source for more detail
 
-##Startup
+##Develop and Build
 
 * **env development** (using webpack-dev-server in backend) : 
 
-- gulp dev
+ gulp dev
 
-open browser and type: localhost:9182
+ open browser and type: localhost:9182
 
 * **env prodution** :
 
-gulp build     
+ gulp build     
 
 ##QQ
 2811786667
