@@ -5,3 +5,6 @@
 /public/.DS_Store
 /web/.*
 /web/stylesheets/
+**/.DS_Store
+.DS_Store?
+.DS_Store
