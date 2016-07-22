@@ -68,7 +68,7 @@ source for more detail
 
 * **env development** (using webpack-dev-server in backend) : 
 
-gulp dev
+- gulp dev
 
 open browser and type: localhost:9182
 
