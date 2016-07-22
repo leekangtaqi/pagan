@@ -48,7 +48,7 @@ require('path-to-nest');
     dispatch => ({})
   )(this)
   
-  this.mixin('router');
+  this.mixin('router');   // use router
   
   this.$routeConfig([     // router define (nest router support)
     {name: 'nest', path: '/nest'}
