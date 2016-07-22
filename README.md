@@ -2,7 +2,7 @@
 
 <img width="320" src="https://github.com/leekangtaqi/pagan/raw/master/client/assets/images/logo.jpg"/>
 
-Front-end framework based on riot, redux.
+Fullstack framework based on riot, redux, express.
 
 ---
 
@@ -63,6 +63,16 @@ require('path-to-nest');
 
 ##Example
 source for more detail
+
+##Startup
+
+env development (using webpack-dev-server in backend) : 
+
+gulp dev       
+
+env prodution :
+
+gulp build     
 
 ##QQ
 2811786667
