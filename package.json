@@ -1,6 +1,6 @@
 {
   "name": "paganjs",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "frontend framework base on riot and redux",
   "main": "server/app.js",
   "author": "leekangtaqi",
