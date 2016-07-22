@@ -11,7 +11,7 @@ Fullstack framework based on riot, redux, express.
 ###Install
 
 ```
-npm install pagan
+npm install paganjs
 ```
 
 ### Usage
