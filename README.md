@@ -1,6 +1,6 @@
 # pagan
 
-<img width="30%" src="http://img2.imgtn.bdimg.com/it/u=3943416514,3665904824&fm=21&gp=0.jpg"/>
+<img width="320" src="https://github.com/leekangtaqi/pagan/raw/master/client/assets/images/logo.jpg"/>
 
 Front-end framework based on riot, redux.
 
@@ -25,8 +25,6 @@ app.set('env', process.env.NODE_ENV === 'production' ? 'production' : 'developme
 app.set('mode', 'browser');
 
 app.set('context', { store: app.store, hub: router.hub, tags: {} });
-
-app.mixin('form', form);
 
 app.router(router);
 
