@@ -1,5 +1,5 @@
 {
-  "name": "pagan",
+  "name": "paganjs",
   "version": "0.0.1",
   "description": "frontend framework base on riot and redux",
   "main": "server/app.js",
