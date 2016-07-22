@@ -1,25 +1,25 @@
-// const logger = store => next => action => {
-//     let actionName = null;
-//     let actionShow = null;
-//     if(typeof action === 'object'){
-//         actionName = action.type;
-//         actionShow = action;
-//     }
-//     if(typeof action === 'function'){
-//         actionName = (action.name || action.toString().match(/function\s*([^(]*)\(/)[1]) + '[Async-Thunk]';
-//         actionShow = "thunk is pending";
-//     }
-//     if(action.then && typeof action.then === 'function'){
-//         actionName = '[Async-Promise]';
-//         actionShow = action;
-//     }
-//     console.group(actionName);
-//     console.info('dispatching', actionShow);
-//     let result = next(action);
-//     console.log('next state', store.getState());
-//     console.groupEnd(actionName);
-//     return result
-// };
+const logger = store => next => action => {
+    let actionName = null;
+    let actionShow = null;
+    if(typeof action === 'object'){
+        actionName = action.type;
+        actionShow = action;
+    }
+    if(typeof action === 'function'){
+        actionName = (action.name || action.toString().match(/function\s*([^(]*)\(/)[1]) + '[Async-Thunk]';
+        actionShow = "thunk is pending";
+    }
+    if(action.then && typeof action.then === 'function'){
+        actionName = '[Async-Promise]';
+        actionShow = action;
+    }
+    console.group(actionName);
+    console.info('dispatching', actionShow);
+    let result = next(action);
+    console.log('next state', store.getState());
+    console.groupEnd(actionName);
+    return result
+};
 
 const timeoutScheduler = store => next => action => {
     if (!action.meta || !action.meta.delay) {
