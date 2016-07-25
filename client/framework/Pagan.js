@@ -1,13 +1,15 @@
 import riot from 'riot'; 
 import { configureStore } from '../configuration/store';
 import riotRouterRedux from '../framework/riot-router-redux';
+import router from '../framework/lean-router';
 
-class Application {
+class Pagan {
 	constructor(){
 		this.framework = riot;
 		this.buildInProps = ['env', 'entry', 'context', 'mode'];
 		this._mode = 'hash';
 		this._store = configureStore({}, this._mode);
+		this.router(router);
 		this._context = {
 				store: this._store,
 				hub: {},
@@ -108,6 +110,6 @@ class Application {
 	}
 }
 
-const appCreator = () => new Application();
+const appCreator = () => new Pagan();
 
 export default appCreator;

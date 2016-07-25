@@ -6,7 +6,7 @@ import { provide } from '../framework/riot-redux';
 import router from '../framework/lean-router';
 import {} from 'riot-form';
 import bootstrap from './bootstrap';
-import Application from '../framework/Tesla';
+import Application from '../framework/Pagan';
 
 var app = Application();
 
