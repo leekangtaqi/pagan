@@ -5,7 +5,10 @@
   "main": "server/app.js",
   "author": "leekangtaqi",
   "keywords": [
-    "riot", "redux", "frontend", "framework"    
+    "riot",
+    "redux",
+    "frontend",
+    "framework"
   ],
   "repository": {
     "type": "git",
@@ -23,18 +26,22 @@
     "errorhandler": "~1.0.0",
     "express": "^4.14.0",
     "express-session": "~1.0.2",
+    "gulp-rev": "^7.1.2",
+    "gulp-rev-replace": "^0.4.3",
     "if-env": "^1.0.0",
     "js-cookie": "^2.1.2",
     "lodash": "~2.4.1",
     "method-override": "~1.0.0",
     "moment": "^2.13.0",
     "morgan": "^1.5.2",
+    "node-fetch": "^1.6.3",
     "nodemon": "^1.9.2",
     "redux": "^3.5.2",
     "request": "^2.57.0",
-    "riot": "^2.4.1",
-    "riot-form-mixin": "0.0.6",
+    "riot": "^2.6.4",
+    "riot-form-mixin": "^4.0.0",
     "riot-mixin-pack": "^0.1.7",
+    "riotjs-redux": "^1.0.0",
     "serve-favicon": "~2.0.1",
     "whatwg-fetch": "^1.0.0"
   },

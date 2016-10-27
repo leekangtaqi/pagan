@@ -13,6 +13,7 @@ function post(url, json, opts){
     })
         .then(res=>checkStatus(res))
         .then(res=>parseJSON(res))
+        .then(data=>checkData(data))
 }
 
 function get(url, n={}, opts){
@@ -21,6 +22,7 @@ function get(url, n={}, opts){
     return fetch(url, meta)
         .then(res=>checkStatus(res))
         .then(res=>parseJSON(res))
+        .then(data=>checkData(data))
 }
 
 function put(url, json, opts){
@@ -36,6 +38,7 @@ function put(url, json, opts){
     })
         .then(res=>checkStatus(res))
         .then(res=>parseJSON(res))
+        .then(data=>checkData(data))
 }
 
 function del(url, n={}, opts){
@@ -44,6 +47,7 @@ function del(url, n={}, opts){
     return fetch(url, meta)
         .then(res=>checkStatus(res))
         .then(res=>parseJSON(res))
+        .then(data=>checkData(data))
 }
 
 function checkStatus(response) {
@@ -57,16 +61,25 @@ function checkStatus(response) {
 }
 
 function parseJSON(response) {
-    let contentType = response.headers.get('Content-Type');
+    let contentType = response.headers.get('Content-Type'); 
     if(/json/.test(contentType)){
         return response.json();
     }else if(/text/.test(contentType)){
         return response.text();
     }else{
-        let error = new Error('un known data from remote');
+        let error = new Error('unknown data from remote');
         error.response = response;
         throw error;
     }
+}
+
+function checkData(data){
+    if(typeof data === 'object'){
+        if(data.errmsg){
+            throw new Error(data.errmsg);
+        }
+    }
+    return data
 }
 
 var api = {get, post, put, del};
@@ -93,7 +106,6 @@ const invocationCreator = function(path, props){
             invocation.props && (Object.assign(repeatorOpts, invocation.props));
             let chain = api[method].call(null, uri, json, repeatorOpts || {})
             chain.catch(e=> {
-                console.warn(e);
                 errorInterceptor && errorInterceptor(e, chain)
             })
             return chain;

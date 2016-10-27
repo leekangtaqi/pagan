@@ -1,0 +1,37 @@
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="format-detection" content="telephone=no"/>
+    <title></title>
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <script src="http://res.wx.qq.com/open/js/jweixin-1.1.0.js"></script>
+  </head>
+  <body>
+    <app></app>
+    <alert></alert>
+    <modal></modal>
+    
+    <script>
+      /**
+       *  development entry point 
+       **/
+      var body = document.getElementsByTagName('body')[0]; 
+      var script = document.createElement('script'); 
+      script.type = 'text/javascript';
+      let parts = window.location.origin.split(':');
+      let refinedOrigin = window.location.origin;
+      if(parts.length && parts[2]){
+        refinedOrigin = window.location.origin.replace(parts[2], '');
+      }
+      script.src = refinedOrigin + '8080' + '/client/app/bundle.js'; 
+      body.appendChild(script);
+    </script>
+    
+    <div style="display:none">
+      <!--<script src="http://s11.cnzz.com/stat.php?id=1256263156&web_id=1256263156" language="JavaScript"></script>-->
+    </div>
+    
+</body>
+</html>

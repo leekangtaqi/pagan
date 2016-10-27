@@ -1,4 +1,4 @@
-require('./radio.html');
+require('./radio.tag');
 
 <radio-group>
 	<div class="{opts.class}">

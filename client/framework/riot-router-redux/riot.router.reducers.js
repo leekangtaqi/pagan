@@ -18,8 +18,7 @@ const route = (route= initialRouteData, action) => {
                 $location: action.payload.route.$location,
                 $protocol: action.payload.route.$protocol || route.$protocol,
                 $host: route.$host,
-                data: action.payload.route.ctx,
-                stack: [...route.stack, route.$state]
+                data: action.payload.route.ctx
             });
         case '$query':
             return Object.assign({}, route, {
@@ -32,13 +31,12 @@ const route = (route= initialRouteData, action) => {
                 data: Object.assign({},
                     {
                         request: {
-                            body: route.data.request.body,
-                            params: route.data.request.params,
+                            body: route.data.req.body,
+                            params: route.data.req.params,
                             query: action.payload,
                         }
                     }
-                ),
-                stack: [...route.stack]
+                )
             })
         case '$routeBusy':
             return Object.assign({}, route, {busy: true});

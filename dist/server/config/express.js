@@ -14,10 +14,11 @@ var cookieParser = require('cookie-parser');
 var errorHandler = require('errorhandler');
 var path = require('path');
 var config = require('./environment');
+var gzipFilter = require('../framework/gzip-require');
 
-module.exports = function(app) {
+module.exports = function (app) {
   var env = app.get('env');
-	app.enable('trust proxy');
+  app.enable('trust proxy');
   app.set('views', config.root + '/server/views');
   app.engine('html', require('ejs').renderFile);
   app.set('view engine', 'html');
@@ -26,15 +27,26 @@ module.exports = function(app) {
   app.use(bodyParser.json());
   app.use(methodOverride());
   app.use(cookieParser());
-  
+
+  app.use(function (req, res, next) {
+    console.warn('xxxxxxxxxxxxxxxxxxxx');
+    next();
+  });
+
   if ('production' === env) {
     app.use(favicon(path.join(config.root, 'public', 'favicon.ico')));
+    //todo remove when upload to cdn
+    app.use(gzipFilter.serve(path.join(__dirname, '../../public'), { gzip: true }));
     app.use(express.static(path.join(config.root, 'public')));
     app.set('appPath', config.root + '/public');
     app.use(morgan('short'));
   }
 
   if ('development' === env || 'test' === env) {
+    app.use(function (req, res, next) {
+      console.warn(req.originalUrl);
+      next();
+    });
     app.use(express.static(path.join(config.root, '.tmp')));
     app.use(express.static(path.join(config.root, 'client')));
     app.set('appPath', 'client');

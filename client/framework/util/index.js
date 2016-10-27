@@ -1,10 +1,12 @@
 const values = (o) => {
     return Object.keys(o).map(k=>o[k])
 }
+
 const mixin = (...args) => {
     return Object.assign(...args)
 }
-const pick = (o, ...fs) => {
+
+const pick = (o, ...fs) =>
     Object.keys(o)
         .filter(f => fs.indexOf(f) >= 0)
         .map(f=>({key: f, val: o[f]}))
@@ -12,12 +14,12 @@ const pick = (o, ...fs) => {
             acc[pair.key] = pair.val;
             return acc;
         }, {})
-}
+
 const omit = (o, ...fs) => 
     Object.keys(o)
         .filter(f => fs.indexOf(f) < 0)
         .map(f=>({key: f, val: o[f]}))
-        .reduce((acc, pair)=>{
+        .reduce((acc, pair) => {
             acc[pair.key] = pair.val;
             return acc;
         }, {})
@@ -89,15 +91,38 @@ const throttle = (fn, wait) => {
         timer = null;
     }, wait)
 }
+
 const filter = {
     ago: d => {
         if(typeof d === 'string'){
             d = new Date(d);
         }
-        return Math.ceil(parseFloat((d.getTime() - new Date().getTime()), 10)/(24*3600*1000)) + '天内';
+        let distinct = parseFloat((d.getTime() - new Date().getTime()), 10);
+        let isBefore = distinct < 0;
+        let absDistinct = Math.abs(distinct);
+        //----ningning----
+        let minutesStep = Math.ceil(absDistinct/(60*1000));
+        if(minutesStep < 60){
+            return (isBefore ? minutesStep + '分钟前' : minutesStep + '分钟内');
+        }
+        let hourStep = Math.ceil(absDistinct/(3600*1000));
+        if(hourStep < 24){
+            return (isBefore ? hourStep + '小时前' : hourStep + '小时内');
+        }
+        //--------------
+        let dayStep = Math.ceil(absDistinct/(24*3600*1000));
+        if(dayStep < 30){
+            return (isBefore ? dayStep + '天前' : dayStep + '天内');
+        }
+        let monthStep = Math.ceil(dayStep / 30);
+        if(monthStep < 12){
+            return (isBefore ? monthStep + '个月前' : monthStep + '个月内');
+        }
+        let yearStep = Math.ceil(monthStep / 12);
+        return (isBefore ? yearStep + '年前' : yearStep + '年内');
     },
-    currency: (s) => {
-        return (s || 0).toString().replace(/(\d)(?=(?:\d{3})+$)/g, '$1,'); 
+    currency: (s, prefix = true) => {
+        return (prefix ? '￥' : '') + (s.toFixed(2) || 0).toString().replace(/(\d)(?=(?:\d{3})+$)/g, '$1,'); 
     },
     date: function(date, fmt){
         var o = {
@@ -117,6 +142,7 @@ const filter = {
         return fmt;
     }
 }
+
 const deepEqual = (x, y) => {
   return (x && y && typeof x === 'object' && typeof y === 'object') ?
     (Object.keys(x).length === Object.keys(y).length) &&
@@ -124,6 +150,7 @@ const deepEqual = (x, y) => {
         return isEqual && deepEqual(x[key], y[key]);
       }, true) : (x === y);
 }
+
 export default {
     values, 
     mixin, 

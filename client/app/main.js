@@ -2,13 +2,13 @@ import {} from '../framework/es6-polyfill';
 import {} from '../framework/jQueryLean';
 import riot from 'riot';
 import Cookies from '../framework/cookie';
-import { provide } from '../framework/riot-redux';
+import { provide } from 'riotjs-redux';
 import router from '../framework/lean-router';
 import {} from 'riot-form';
 import bootstrap from './bootstrap';
 import Application from '../framework/Pagan';
 
-var app = Application();
+var app = Application({container: window});
 
 app.set('env', process.env.NODE_ENV === 'production' ? 'production' : 'development');
 
@@ -33,19 +33,19 @@ app.start(async () => {
         //todo
     })
 
-    require('./app.html');
-    require('./commons/on-scroll.html')
-    require('./commons/modal.html');
-    require('./commons/alert.html');
-    require('./commons/rlink.html');
-    require('./commons/img-lazy-loader.html');
-    require('./commons/icobar.html');
-    require('./commons/bottom.html');
-    require('./commons/raw.html');
-    require('./commons/carousel.html');
-    require('./commons/progressbar.html');
-    require('./commons/radio-group.html');
-    require('./commons/radio.html');
+    require('./app.tag');
+    require('./commons/on-scroll.tag')
+    require('./commons/modal.tag');
+    require('./commons/alert.tag');
+    require('./commons/rlink.tag');
+    require('./commons/img-lazy-loader.tag');
+    require('./commons/icobar.tag');
+    require('./commons/bottom.tag');
+    require('./commons/raw.tag');
+    require('./commons/carousel.tag');
+    require('./commons/progressbar.tag');
+    require('./commons/radio-group.tag');
+    require('./commons/radio.tag');
 
     app.registerWidget({
         name: 'alert',

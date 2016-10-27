@@ -26,14 +26,13 @@ if(process.env.NODE_ENV === 'development'){
   let webpack = require('webpack');
   let WebpackDevServer = require('webpack-dev-server');
   let config = require('../webpack.config.js');
-  
   new WebpackDevServer(webpack(config), {
     publicPath: config.output.publicPath,
     // hot: true,
     historyApiFallback: true,
     proxy: {
-      "/api/*": "http://localhost:" + config.port,
-      "/config/*": "http://localhost:" + config.port
+      "/api/*": "http://localhost:" + config.devServer.port,
+      "/config/*": "http://localhost:" + config.devServer.port
     }
   }).listen(8080, '0.0.0.0', function (err, result) {
     if (err) {

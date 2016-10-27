@@ -2,13 +2,13 @@ function routerMiddlewareCreator(historyMode){
     return store => next => action => {
         if(action.type === 'route'){
         }
-        next(action);
+        return next(action);
     }
 }
 function syncHistoryWithStore(hub, store){
     hub.off('state-search').on('state-search', ({param, value})=>{
         let route = store.getState().route;
-        let query = route.data.request.query;
+        let query = route.data.req.query;
         if(query[param] && (query[param] = value)){
             return;
         }
@@ -30,20 +30,20 @@ function syncHistoryWithStore(hub, store){
         })
     })
     hub.off('busy-pending').on('busy-pending', ()=>{
-        store.dispatch({
-            type: 'maskShow'
-        });
-        store.dispatch({
-            type: '$routeBusy'
-        })
+        // store.dispatch({
+        //     type: 'maskShow'
+        // });
+        // store.dispatch({
+        //     type: '$routeBusy'
+        // })
     });
     hub.off('busy-resolve').on('busy-resolve', ()=>{
-        store.dispatch({
-            type: 'maskHidden'
-        });
-        store.dispatch({
-            type: '$routeUnBusy'
-        })
+        // store.dispatch({
+        //     type: 'maskHidden'
+        // });
+        // store.dispatch({
+        //     type: '$routeUnBusy'
+        // })
     })
 }
 export default {routerMiddlewareCreator, syncHistoryWithStore}

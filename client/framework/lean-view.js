@@ -1,4 +1,5 @@
-const rendererCreator = (router) => {
+const rendererCreator = router => {
+
     let renderer = {
         enter: (tag, from, callback)=> {
             if(!tag){
@@ -53,18 +54,30 @@ const rendererCreator = (router) => {
             }
         },
 
-        init: (tag)=> {
+        init: (tag, name) => {
             tag.hidden = true;
             tag.show = false;
         }
     };
-    router.on('history-resolve', (source, target, ctx, hints, next)=>{
-        let sourceTag = source && source.tag || null;
-        let targetTag = target && target.tag || null;
-        renderer.enter(targetTag, sourceTag);
-        renderer.leaveUpstream(targetTag)
+
+    router.on('history-pending', (from, to) => {
+        if(from && from.tag){
+            from.tag.trigger('before-leave');
+        }
+    });
+
+    router.on('history-resolve', (from, to, ctx, hints, next) => {
+        let fromTag = from && from.tag || null;
+        let toTag = to && to.tag || null;
+        renderer.enter(toTag, fromTag);
+        renderer.leaveUpstream(toTag)
         next();
     });
+
+    router.on('history-success', (from, to) => {
+        to && to.tag && to.tag.trigger('entered');
+    });
+
     return　renderer;
 };
 

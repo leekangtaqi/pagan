@@ -20,7 +20,7 @@ let baseConfig = {
     module: {
         preLoaders: [
             {
-                test: /\.html$/,
+                test: /\.tag$/,
                 exclude: /node_modules/,
                 loader: 'riotjs-loader',
                 query: { type: 'babel' , compact: true}
@@ -29,9 +29,10 @@ let baseConfig = {
         loaders: [
             {
                 test: /\.js$/,
+                exclude: /node_modules/,
                 include: /client/,
                 loader: 'babel',
-                query: {compact: true}
+                query: {presets: ['es2015'], compact: true}
             },
             {
                 test: /\.scss$/,
@@ -69,7 +70,7 @@ let proConfig = {
         }),
     ],
     output: {
-        path: path.resolve(__dirname, './public/js'),
+        path: path.resolve(__dirname, './dist/client/app/'),
         filename: 'bundle.js'
     }
 }
@@ -80,6 +81,14 @@ let devConfig = {
         'webpack-dev-server/client?http://0.0.0.0:8080',
         'whatwg-fetch', 
         './client/app/main.js'
+    ],
+    plugins: [
+        new webpack.DefinePlugin({
+            'process.env': {
+                NODE_ENV: JSON.stringify('production'),
+                CLIENT_SIDE: true 
+            }
+        })
     ],
     devtool: 'eval',
     output: {
@@ -102,6 +111,7 @@ switch(env){
         mixin(baseConfig, proConfig);
         break;
     case 'development':
+        devConfig.plugins = devConfig.plugins.concat(baseConfig.plugins);
         mixin(baseConfig, devConfig);
         break;
 }

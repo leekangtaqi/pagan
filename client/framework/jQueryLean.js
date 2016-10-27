@@ -2,8 +2,11 @@ import * as fetch from './fetchMonkeyPatch';
 import _ from './util';
 
 ;(function(root, undefined){
-    'use strict';
-
+    if(typeof window != 'undefined'){
+        root = window;
+    }else{
+        root = global;
+    }
     let _jQuery = root.jQuery;
     if(_jQuery) {
         return _jQuery;
@@ -110,4 +113,4 @@ import _ from './util';
 
     root.$ = jQuery;
 
-})(window);
+})();

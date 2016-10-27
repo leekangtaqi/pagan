@@ -4,8 +4,15 @@ import riotRouterRedux from '../framework/riot-router-redux';
 import router from '../framework/lean-router';
 
 class Pagan {
-	constructor(){
+	/**
+	 * @param container {Object} window in browser, or global in server.
+	 */
+	constructor({ container }){
+		if(!container){
+			throw new Error(`a container expected.`);
+		}
 		this.framework = riot;
+		this.container = container;
 		this.buildInProps = ['env', 'entry', 'context', 'mode'];
 		this._mode = 'hash';
 		this._store = configureStore({}, this._mode);
@@ -15,7 +22,7 @@ class Pagan {
 				hub: {},
 				tags: {}
 		};
-		window.widgets = this._widgets = {};
+		container.widgets = this._widgets = {};
 	}
 
 	set(prop, val){
@@ -28,7 +35,7 @@ class Pagan {
 					this.mixin('router', this._router.router(this._mode)); 
 				}
 			case 'context':
-				window.context = this._context;
+				this.container = this._context;
 				break;
 		}
 	}
@@ -87,6 +94,12 @@ class Pagan {
 		return this.framework.trigger.apply(this.framework, args)
 	}
 
+	get container(){
+		return this._container;
+	}
+	set container(val){
+		this._container = val;
+	}
 	get hub(){
 		return this._router.hub;
 	}
@@ -110,6 +123,6 @@ class Pagan {
 	}
 }
 
-const appCreator = () => new Pagan();
+const appCreator = params => new Pagan(params);
 
 export default appCreator;
